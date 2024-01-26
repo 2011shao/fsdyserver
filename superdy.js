@@ -1,7 +1,7 @@
 const client_secret = process.env["client_secret"];
 const client_key = process.env["client_key"];
 // 获取toekn
-async function getAccessToken(param) {
+async function getAccessToken(code) {
   const url = `https://open.douyin.com/oauth/access_token/`;
   const res = await uniCloud.httpclient.request(url, {
     dataType: "json",
@@ -10,7 +10,7 @@ async function getAccessToken(param) {
       grant_type: "authorization_code",
       client_key: client_key,
       client_secret: client_secret,
-      code: param.code,
+      code: code,
     },
   });
   if (res.data.data.error_code == 0) {
