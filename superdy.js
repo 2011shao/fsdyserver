@@ -21,12 +21,12 @@ async function getAccessToken(code) {
   if (res.data.data.error_code == 0) {
     return {
       errCode: 0,
-      data: res,
+      data: res.data.data,
     };
   } else {
     return {
       errCode: 1,
-      data: res,
+      data: res.data.data.description
     };
   }
 }
@@ -71,4 +71,29 @@ function decodePhone(encryptedMobile) {
   return phone_info
 }
 
+
+//获取视频列表
+async function getVideoList(req) {
+  const url = 'https://open.douyin.com/api/douyin/v1/video/video_list/'
+  const res = await axios.get(url, {
+    open_id: req.open_id,
+    count: 100,
+  }, {
+    headers: {
+      // 'Content-Type': 'application/json',
+      "access-token": req.accessToken
+    },
+  });
+  if (res.data.data.error_code == 0) {
+    return {
+      errCode: 0,
+      data: res.data.data,
+    };
+  } else {
+    return {
+      errCode: 1,
+      data: res.data.data.description
+    };
+  }
+}
 export { getAccessToken, getDyUserInfo, decodePhone };
