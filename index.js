@@ -6,7 +6,7 @@ app.get("/", async (req, res) => {
   res.send("Hello World!");
 });
 
-app.get("/dyauth/", async (req, res) => {
+app.get("/dyauth", async (req, res) => {
   const { code } = req.query
   if (code) {
     const result = await getAccessToken(code);
