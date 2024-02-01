@@ -5,22 +5,23 @@ const app = express();
 app.get("/", async (req, res) => {
   res.send("Hello World!");
 });
-
 app.get("/dyauth", async (req, res) => {
   const { code } = req.query
   if (code) {
     const result = await getAccessToken(code);
-    // console.log('code',result)
-
     res.json(result)
-
   } else {
     res.send('err code')
   }
-
-  // // console.log(result);
-  // // const aa=decodePhone('lKZLAh6uwmh2xX8arkSylQ==')
-  // res.send("Hello World!"+req.query);
+});
+app.get("/videolist", async (req, res) => {
+  const { code } = req.query
+  if (code) {
+    const result = await getAccessToken(code);
+    res.json(result)
+  } else {
+    res.send('err code')
+  }
 });
 
 app.listen(3000, () => {
