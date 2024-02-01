@@ -1,5 +1,5 @@
 import express from "express";
-import { getAccessToken, getDyUserInfo, decodePhone } from "./superdy.js"
+import { getAccessToken, getDyUserInfo, decodePhone,getVideoList } from "./superdy.js"
 const app = express();
 
 app.get("/", async (req, res) => {
@@ -15,9 +15,9 @@ app.get("/dyauth", async (req, res) => {
   }
 });
 app.get("/videolist", async (req, res) => {
-  const { code } = req.query
-  if (code) {
-    const result = await getAccessToken(code);
+  const { accessToken,openId } = req.query
+  if (accessToken && openId) {
+    const result = await getVideoList(req.query);
     res.json(result)
   } else {
     res.send('err code')

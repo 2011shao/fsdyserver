@@ -76,7 +76,7 @@ function decodePhone(encryptedMobile) {
 async function getVideoList(req) {
   const url = 'https://open.douyin.com/api/douyin/v1/video/video_list/'
   const res = await axios.get(url, {
-    open_id: req.open_id,
+    open_id: req.openId,
     count: 100,
   }, {
     headers: {
@@ -96,4 +96,4 @@ async function getVideoList(req) {
     };
   }
 }
-export { getAccessToken, getDyUserInfo, decodePhone };
+export { getAccessToken, getDyUserInfo, decodePhone, getVideoList };
