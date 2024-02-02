@@ -6,7 +6,6 @@ const client_key = process.env["client_key"];
 import CryptoJS from "crypto";
 const encryptedMobile = "lKZLAh6uwmh2xX8arkSylQ==";
 import axios from "axios";
-import { setUser, getUser } from "./dataTools.js";
 
 // 获取toekn
 async function getAccessToken(code) {
@@ -29,7 +28,6 @@ async function getAccessToken(code) {
     const userRes = await getDyUserInfo(res.data.data);
     if (userRes.errCode == 0) {
       Object.assign(res.data.data, userRes.data);
-      await setUser(res.data.data["open_id"], res.data.data);
       return {
         errCode: 0,
         data: res.data.data,
@@ -113,19 +111,3 @@ async function getVideoList(req) {
   }
 }
 export { getAccessToken, getDyUserInfo, decodePhone, getVideoList };
-
-getVideoList({
-  access_token:
-    "act.3.lRCk3CKCGwexdnLr7ai6wdyK4LwBqFA_b7a4_Dr7JOTT2muk65YDVdLL1RLIxOyf5C3oSnEYwQm4COi34s_qZMt-RQxXNAsNWrD522ZD6P85CaIFXGkfStqVSYcd_YpFY0KXFUEK-UrNRarqIQwLc21ki0orKofor703BA==",
-  captcha: "",
-  desc_url: "",
-  description: "",
-  error_code: 0,
-  expires_in: 1296000,
-  log_id: "2024020117331931F35A47E21DD104B0E3",
-  open_id: "_000H_bUsyXO8yxS5-hHajoPYsKR5Cw4c5gY",
-  refresh_expires_in: 2592000,
-  refresh_token:
-    "rft.292451113d10de058d2743e675f3f53b8p7QJl3r1xv1uLbkNQVfMq3601Je",
-  scope: "user_info,fans.check",
-});
