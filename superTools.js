@@ -13,7 +13,6 @@ const serverEncrypt = (message, key = servers_key) => {
 };
 // DES 解密
 const serverDecrypt = (text, key = servers_key) => {
-  console.log("text", servers_key);
   var keyHex = CryptoJS.enc.Utf8.parse(key);
   var message = CryptoJS.DES.decrypt(
     {
