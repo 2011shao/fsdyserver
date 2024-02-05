@@ -1,12 +1,9 @@
 const client_secret = process.env["client_secret"];
 const client_key = process.env["client_key"];
-// const client_secret = "e1f3b9c521ca6cbca20e60ba6d59c22e"
-// const client_key = "awl98juj5xz2ruu9"
-
 import CryptoJS from "crypto";
 const encryptedMobile = "lKZLAh6uwmh2xX8arkSylQ==";
 import axios from "axios";
-
+import { serverDecrypt, serverEncrypt } from "superTools"
 // 获取toekn
 async function getAccessToken(code) {
   const url = `https://open.douyin.com/oauth/access_token/`;
@@ -28,6 +25,8 @@ async function getAccessToken(code) {
     const userRes = await getDyUserInfo(res.data.data);
     if (userRes.errCode == 0) {
       Object.assign(res.data.data, userRes.data);
+      res.data.data['open_id'] = serverEncrypt(res.data.data['open_id'])
+      res.data.data['access_token'] = serverEncrypt(res.data.data['access_token'])
       return {
         errCode: 0,
         data: res.data.data,
@@ -89,21 +88,20 @@ function decodePhone(encryptedMobile) {
 
 //获取视频列表
 async function getVideoList(req) {
-  const url = `https://open.douyin.com/api/douyin/v1/video/video_list/?open_id=${req.open_id}&count=10&cursor=0&`;
+  const open_id = serverDecrypt(req.open_id)
+  const access_token = serverDecrypt(req.access_token)
+  const url = `https://open.douyin.com/api/douyin/v1/video/video_list/?open_id=${open_id}&count=10&cursor=0&`;
   const res = await axios.get(url, {
     headers: {
-      // 'Content-Type': 'application/json',
-      "access-token": req.access_token,
+      "access-token": access_token
     },
   });
   if (res.data.data.error_code == 0) {
-    console.log("视频", res.data.data);
     return {
       errCode: 0,
       data: res.data.data,
     };
   } else {
-    console.log("视频", res.data.data);
     return {
       errCode: 1,
       data: res.data.data.description,
