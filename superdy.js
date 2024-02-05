@@ -3,7 +3,7 @@ const client_key = process.env["client_key"];
 import CryptoJS from "crypto";
 const encryptedMobile = "lKZLAh6uwmh2xX8arkSylQ==";
 import axios from "axios";
-import { serverDecrypt, serverEncrypt } from "superTools"
+import { serverDecrypt, serverEncrypt } from "superTools.js"
 // 获取toekn
 async function getAccessToken(code) {
   const url = `https://open.douyin.com/oauth/access_token/`;
