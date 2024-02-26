@@ -92,22 +92,51 @@ function decodePhone(encryptedMobile) {
 async function getVideoList(req) {
   const open_id = serverDecrypt(req.open_id);
   const access_token = serverDecrypt(req.access_token);
-  const url = `https://open.douyin.com/api/douyin/v1/video/video_list/?open_id=${open_id}&count=100&cursor=0&`;
-  const res = await axios.get(url, {
-    headers: {
-      "access-token": access_token,
-    },
-  });
-  if (res.data.data.error_code == 0) {
-    return {
-      errCode: 0,
-      data: res.data.data,
-    };
-  } else {
-    return {
-      errCode: 1,
-      data: res.data.data.description,
-    };
+  const endTime = req.end_date;
+  const startTime = req.start_date;
+  let arr = [];
+  async function get_onece_list(pageIndex = 0) {
+    const url = `https://open.douyin.com/api/douyin/v1/video/video_list/?open_id=${open_id}&count=10&cursor=${pageIndex}`;
+    try {
+      const res = await axios.get(url, {
+        headers: {
+          "access-token": access_token,
+        },
+      });
+      if (res.data.data.error_code == 0) {
+        if (Array.isArray(res.data.data.list)) {
+          arr = arr.concat(
+            res.data.data.list.filter(
+              (a) => a["create_time"] * 1000 > startTime,
+            ),
+          );
+        }
+        if (
+          res.data.data.has_more &&
+          res.data.data.cursor >= startTime &&
+          startTime
+        ) {
+          await get_onece_list(res.data.data.cursor);
+        }
+      } else {
+        return {
+          errCode: 1,
+          data: res.data.data.description,
+        };
+      }
+    } catch (error) {
+      // Handle axios request error
+      console.log("错处", error);
+      return {
+        errCode: 1,
+        data: `Request error`,
+      };
+    }
   }
+  await get_onece_list(endTime);
+  return {
+    errCode: 0,
+    data: arr,
+  };
 }
 export { getAccessToken, getDyUserInfo, decodePhone, getVideoList };
