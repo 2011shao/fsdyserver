@@ -92,7 +92,7 @@ function decodePhone(encryptedMobile) {
 async function getVideoList(req) {
   const open_id = serverDecrypt(req.open_id);
   const access_token = serverDecrypt(req.access_token);
-  const url = `https://open.douyin.com/api/douyin/v1/video/video_list/?open_id=${open_id}&count=10&cursor=0&`;
+  const url = `https://open.douyin.com/api/douyin/v1/video/video_list/?open_id=${open_id}&count=100&cursor=0&`;
   const res = await axios.get(url, {
     headers: {
       "access-token": access_token,
